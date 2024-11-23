@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\C#\\DesignPattern\\DesignPattern\\DesignPattern.csproj": {}
+    "D:\\C#\\DesignPattern\\DesignPattern.csproj": {}
   },
   "projects": {
-    "D:\\C#\\DesignPattern\\DesignPattern\\DesignPattern.csproj": {
+    "D:\\C#\\DesignPattern\\DesignPattern.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\C#\\DesignPattern\\DesignPattern\\DesignPattern.csproj",
+        "projectUniqueName": "D:\\C#\\DesignPattern\\DesignPattern.csproj",
         "projectName": "DesignPattern",
-        "projectPath": "D:\\C#\\DesignPattern\\DesignPattern\\DesignPattern.csproj",
+        "projectPath": "D:\\C#\\DesignPattern\\DesignPattern.csproj",
         "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "D:\\C#\\DesignPattern\\DesignPattern\\obj\\",
+        "outputPath": "D:\\C#\\DesignPattern\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
