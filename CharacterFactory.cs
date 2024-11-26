@@ -10,7 +10,9 @@ public interface ICharacter
     public int level { get; set; }
     public int strength { get; set; }
     public int health { get; set; }
-    void SetState(ICharacterState newState);
+    public void SetState(ICharacterState newState);
+    public void IdleState();
+    public void CombatState();
     string GetInfo();
     public void increaseCharacter();
 }
@@ -35,7 +37,14 @@ public class Player : ICharacter
     public void SetState(ICharacterState newState)
     {
         CurrentState = newState;
-        CurrentState.Handle(this);
+    }
+    public void IdleState()
+    {
+        CurrentState.ChangeIdleState(this);
+    }
+    public void CombatState()
+    {
+        CurrentState.ChangeCombatState(this);
     }
 
     public string GetInfo()
@@ -74,6 +83,8 @@ public abstract class Monster : ICharacter
 
     public abstract void SetState(ICharacterState newState);
 
+    public abstract void IdleState();
+    public abstract void CombatState();
     public abstract string GetInfo();
     public abstract void increaseCharacter();
 }
@@ -95,7 +106,14 @@ public class Goblin : Monster
     public override void SetState(ICharacterState newState)
     {
         CurrentState = newState;
-        CurrentState.Handle(this);
+    }
+    public override void IdleState()
+    {
+        CurrentState.ChangeIdleState(this);
+    }
+    public override void CombatState()
+    {
+        CurrentState.ChangeCombatState(this);
     }
 
     public override string GetInfo()
@@ -124,7 +142,14 @@ public class Slime : Monster
     public override void SetState(ICharacterState newState)
     {
         CurrentState = newState;
-        CurrentState.Handle(this);
+    }
+    public override void IdleState()
+    {
+        CurrentState.ChangeIdleState(this);
+    }
+    public override void CombatState()
+    {
+        CurrentState.ChangeCombatState(this);
     }
 
     public override string GetInfo()
