@@ -1,35 +1,72 @@
-//캐릭터 상태 인터페이스
-public interface ICharacterState
-{
-    //캐릭터 상태 전환
-    void ChangeIdleState(ICharacter character);
-    void ChangeCombatState(ICharacter character);
-}
 
-//캐릭터의 비전투 상태 클래스
-public class IdleState : ICharacterState
+namespace characterState
 {
-    public void ChangeIdleState(ICharacter character)
+    public interface ICharacterState
     {
-        Console.WriteLine($"{character.GetType().Name}가 이미 비전투 상태입니다.");
+        void HandleAttack();
+        ICharacterState HandleReady();
+        ICharacterState HandleRest();
     }
-    public void ChangeCombatState(ICharacter character)
-    {
-        character.SetState(new CombatState());
-        Console.WriteLine($"{character.GetType().Name}가 전투 상태가 되었습니다.");
-    }
-}
 
-//캐릭터의 전투 상태 클래스
-public class CombatState : ICharacterState
-{
-    public void ChangeIdleState(ICharacter character)
+    // 비전투 상태 클래스
+    public class IdleState : ICharacterState
     {
-        character.SetState(new IdleState());
-        Console.WriteLine($"{character.GetType().Name}가 비전투 상태가 되었습니다.");
+        public void HandleAttack()
+        {
+            Console.WriteLine("비전투 상태에서는 공격할 수 없습니다.");
+        }
+
+        public ICharacterState HandleReady()
+        {
+            Console.WriteLine("캐릭터가 전투 준비 상태로 전환됩니다.");
+            return new CombatState(); // 전투 상태로 전환
+        }
+
+        public ICharacterState HandleRest()
+        {
+            Console.WriteLine("캐릭터가 휴식을 취합니다.");
+            return new RestState();
+        }
     }
-    public void ChangeCombatState(ICharacter character)
+
+    // 전투 상태 클래스
+    public class CombatState : ICharacterState
     {
-        Console.WriteLine($"{character.GetType().Name}가 이미 전투 상태입니다.");
+        public void HandleAttack()
+        {
+            Console.WriteLine("캐릭터가 적을 공격합니다!");
+        }
+
+        public ICharacterState HandleReady()
+        {
+            Console.WriteLine("캐릭터가 이미 전투 상태입니다.");
+            return this; // 비전투 상태로 전환
+        }
+
+        public ICharacterState HandleRest()
+        {
+            Console.WriteLine("전투 상태에서는 휴식할 수 없습니다.");
+            return this;
+        }
+    }
+
+    public class RestState : ICharacterState
+    {
+        public void HandleAttack()
+        {
+            Console.WriteLine("휴식 상태에서는 공격이 불가능합니다.");
+        }
+
+        public ICharacterState HandleReady()
+        {
+            Console.WriteLine("캐릭터가 전투 준비 상태로 전환됩니다.");
+            return new CombatState(); // 전투 상태로 전환
+        }
+
+        public ICharacterState HandleRest()
+        {
+            Console.WriteLine("캐릭터가 이미 휴식 중 입니다.");
+            return this;
+        }
     }
 }
