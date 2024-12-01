@@ -3,9 +3,9 @@ namespace characterState
 {
     public interface ICharacterState
     {
-        void HandleAttack();
-        ICharacterState HandleReady();
-        ICharacterState HandleRest();
+        public void HandleAttack();
+        public ICharacterState HandleReady();
+        public ICharacterState HandleRest();
     }
 
     // 비전투 상태 클래스
@@ -19,7 +19,7 @@ namespace characterState
         public ICharacterState HandleReady()
         {
             Console.WriteLine("캐릭터가 전투 준비 상태로 전환됩니다.");
-            return new CombatState(); // 전투 상태로 전환
+            return new CombatState();
         }
 
         public ICharacterState HandleRest()
@@ -39,8 +39,8 @@ namespace characterState
 
         public ICharacterState HandleReady()
         {
-            Console.WriteLine("캐릭터가 이미 전투 상태입니다.");
-            return this; // 비전투 상태로 전환
+            Console.WriteLine("캐릭터가 비전투 준비 상태로 전환됩니다.");
+            return new IdleState();
         }
 
         public ICharacterState HandleRest()
@@ -59,8 +59,8 @@ namespace characterState
 
         public ICharacterState HandleReady()
         {
-            Console.WriteLine("캐릭터가 전투 준비 상태로 전환됩니다.");
-            return new CombatState(); // 전투 상태로 전환
+            Console.WriteLine("캐릭터가 비전투 준비 상태로 전환됩니다.");
+            return new IdleState();
         }
 
         public ICharacterState HandleRest()

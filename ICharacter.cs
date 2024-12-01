@@ -23,6 +23,7 @@ namespace characterInterface
         public int strength;
         public int health;
 
+        //기본 생성자
         public Player()
         {
             CurrentState = new IdleState();
@@ -112,6 +113,7 @@ namespace characterInterface
     {
         public static int goblinNum = 1;
 
+        //기본 생성자
         public Goblin(string? name, int? level, int? strength, int? health)
         {
             this.CurrentState = new IdleState();
@@ -156,6 +158,7 @@ namespace characterInterface
     {
         public static int slimeNum = 1;
 
+        //기본 생성자
         public Slime(string? name, int? level, int? strength, int? health)
         {
             this.CurrentState = new IdleState();
