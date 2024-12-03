@@ -27,3 +27,17 @@ D:\C#\DesignPattern\bin\Debug\net8.0\DesignPattern.dll
 D:\C#\DesignPattern\bin\Debug\net8.0\DesignPattern.pdb
 D:\C#\DesignPattern\obj\Debug\net8.0\DesignPattern.genruntimeconfig.cache
 D:\C#\DesignPattern\obj\Debug\net8.0\ref\DesignPattern.dll
+C:\Users\user\Desktop\DesignPattern-main\bin\Debug\net8.0\DesignPattern.exe
+C:\Users\user\Desktop\DesignPattern-main\bin\Debug\net8.0\DesignPattern.deps.json
+C:\Users\user\Desktop\DesignPattern-main\bin\Debug\net8.0\DesignPattern.runtimeconfig.json
+C:\Users\user\Desktop\DesignPattern-main\bin\Debug\net8.0\DesignPattern.dll
+C:\Users\user\Desktop\DesignPattern-main\bin\Debug\net8.0\DesignPattern.pdb
+C:\Users\user\Desktop\DesignPattern-main\obj\Debug\net8.0\DesignPattern.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\Desktop\DesignPattern-main\obj\Debug\net8.0\DesignPattern.AssemblyInfoInputs.cache
+C:\Users\user\Desktop\DesignPattern-main\obj\Debug\net8.0\DesignPattern.AssemblyInfo.cs
+C:\Users\user\Desktop\DesignPattern-main\obj\Debug\net8.0\DesignPattern.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\DesignPattern-main\obj\Debug\net8.0\DesignPattern.dll
+C:\Users\user\Desktop\DesignPattern-main\obj\Debug\net8.0\refint\DesignPattern.dll
+C:\Users\user\Desktop\DesignPattern-main\obj\Debug\net8.0\DesignPattern.pdb
+C:\Users\user\Desktop\DesignPattern-main\obj\Debug\net8.0\DesignPattern.genruntimeconfig.cache
+C:\Users\user\Desktop\DesignPattern-main\obj\Debug\net8.0\ref\DesignPattern.dll
