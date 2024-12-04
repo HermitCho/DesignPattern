@@ -6,31 +6,34 @@ namespace DesignPattern
     {
         public static void Main(string[] args)
         {
-            CharacterFactory[] characterFactory =
-            {
-            new PlayerFactory(),
-            new PlayerFactory(),
-            new GoblinFactory(),
-            new GoblinFactory(),
-            new SlimeFactory()
-        };
+            BattleMediator mediator = new BattleMediator();
 
-            ICharacter player1 = characterFactory[0].CreateOperation();
+            PlayerFactory playerFactory = new PlayerFactory();
+            GoblinFactory goblinFactory= new GoblinFactory();
+            DragonFactory dragonFactory= new DragonFactory();
+
+            Player player1 = playerFactory.CreateOperation();
             //캐릭터 커스텀 생성은 시스템 상 막아둠
-            //ICharacter player2 = characterFactory[1].CustomCreateOperation("커스텀 캐릭터", 100, 100, 10000);
-            ICharacter goblin1 = characterFactory[2].CreateOperation();
+            //Player player2 = playerFactory.CreateOperation("커스텀 캐릭터", 100, 100, 10000);
+            Goblin goblin1 = goblinFactory.CreateOperation();
             //고블린 캐릭터 커스텀 생성
-            ICharacter goblin2 = characterFactory[3].CustomCreateOperation("고블린 족장", 5, 5, 25);
-            ICharacter Slime1 = characterFactory[4].CreateOperation();
+            Goblin goblin2 = goblinFactory.CustomCreateOperation("고블린 족장", 5, 5, 25);
+            Dragon dragon1 = dragonFactory.CreateOperation();
 
 
             Console.WriteLine("\n------------------\n");
             //상태에 따른 캐릭터의 행동
+
+            mediator.RegisterBoss(dragon1);
+            mediator.RegisterPlayer(player1);
+            mediator.RegisterMonster(goblin1);
+            mediator.RegisterMonster(goblin2);
+
+            dragon1.PerformAoEAttack();
 
             //goblin1.Ready();
             // goblin1.Die();
             // Console.Write(goblin1.GetInfo());
         }
     }
-
 }

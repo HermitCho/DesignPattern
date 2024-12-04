@@ -1,6 +1,6 @@
 namespace DesignPattern
 {
-    enum State
+    public enum State
     {
         Idle,
         Combat,
@@ -11,15 +11,20 @@ namespace DesignPattern
     {
         void Display_Created();
         string GetInfo();
-        void Attack();
-        void Ready();
-        void Rest();
         void Die();
     }
+
+
+
+
+
+
+
 
     //플레이어 클래스
     public class Player : ICharacter
     {
+        IMediator _mediator;
         State currentState = State.Idle;
         static int playerNum = Int32.Parse(File.ReadAllText("playerNum_to_Server"));
         string name;
@@ -46,6 +51,11 @@ namespace DesignPattern
             Console.WriteLine("플레이어 '" + name + "'(이)가 생성되었습니다.");
         }
 
+        public void SetMediator(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
         public string GetInfo()
         {
             return $"이름 : {name}\n레벨 : {level}\n공격력 : {strength}\n체력 : {health}\n현재 상태 : {currentState}\n플레이어 ID : {playerNum}\r\n";
@@ -65,16 +75,14 @@ namespace DesignPattern
             }
         }
 
-        public void Attack()
+        public void TakeDamage(int damage)
         {
-        }
-
-        public void Ready()
-        {
-        }
-
-        public void Rest()
-        {
+            health -= damage;
+            Console.WriteLine($"{name}(이)가 {damage} 데미지를 받았습니다.");
+            if (health <= 0)
+            {
+                Die();
+            }
         }
 
         public void increaseID()
@@ -84,15 +92,27 @@ namespace DesignPattern
         }
         public void Die()
         {
-            Console.Write($"{name}이(가) 죽었습니다.");
+            Console.Write($"{name}이(가) 죽었습니다. 부활합니다.\n");
+            health = max_health;
         }
     }
+
+
+
+
+
+
+
+
+
+
+
 
     //몬스터 클래스 추상
     public abstract class Monster : ICharacter
     {
-        State currentState = State.Idle;
-        protected ICharacterState CurrentState;
+        protected IMediator _mediator;
+        protected State currentState = State.Idle;
         protected string name;
         protected int level;
         protected int strength;
@@ -103,32 +123,24 @@ namespace DesignPattern
         {
             Console.WriteLine($"{name}이(가) 나타났습니다.");
         }
-        public void SetState(ICharacterState newState)
+        public void SetMediator(IMediator mediator)
         {
-            CurrentState = newState;
+            _mediator = mediator;
         }
 
         public string GetInfo()
         {
-            return $"이름: {name}\n레벨 : {level}\n공격력 : {strength}\n체력 : {health}\n현재 상태 : {CurrentState.GetType().Name}\r\n";
+            return $"이름: {name}\n레벨 : {level}\n공격력 : {strength}\n체력 : {health}\n현재 상태 : {currentState.GetType().Name}\r\n";
         }
 
-        public void Attack()
+        public void TakeDamage(int damage)
         {
-            if(currentState == State.Combat)
-                CurrentState.HandleAttack();
-        }
-
-        public void Defense()
-        {
-            if(currentState == State.Combat)
-                CurrentState.HandleDefense();
-        }
-
-        public void Stun()
-        {
-            if(health == max_health/2)
-                CurrentState.HandleStun();
+            health -= damage;
+            Console.WriteLine($"{name}(이)가 {damage} 데미지를 받았습니다.");
+            if (health <= 0)
+            {
+                Die();
+            }
         }
 
         //몬스터 사망 시 클래스 삭제 및 메모리 관리
@@ -145,7 +157,6 @@ namespace DesignPattern
             strength = 0;
             health = 0;
             max_health = 0;
-            CurrentState = null;
         }
 
         ~Monster()
@@ -162,7 +173,6 @@ namespace DesignPattern
         //기본 생성자
         public Goblin(string? name, int? level, int? strength, int? health)
         {
-            this.CurrentState = new EasyMode();
             this.name = name ?? $"고블린 {goblinNum}";
             this.level = level ?? 1;
             this.strength = strength ?? 5;
@@ -172,20 +182,53 @@ namespace DesignPattern
         }
     }
 
-    public class Slime : Monster
+
+
+
+
+
+
+
+    public class Boss : Monster
     {
-        public static int slimeNum = 1;
+
+        protected IMediator _mediator;
+        protected ICharacterState DifficultyState = new EasyMode();
+        public void SetState(ICharacterState newState)
+        {
+            DifficultyState = newState;
+        }
+        public void SetMediator(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
+        public int GetAreaDamage()
+        {
+            return strength; // 기본 광역 공격 데미지
+        }
+
+        public void PerformAoEAttack()
+        {
+            DifficultyState.HandleAttack(_mediator);
+        }
+    }
+
+
+    public class Dragon : Boss
+    {
+        public static int dragonNum = 1;
 
         //기본 생성자
-        public Slime(string? name, int? level, int? strength, int? health)
+        public Dragon(string? name, int? level, int? strength, int? health)
         {
-            this.CurrentState = new EasyMode();
-            this.name = name ?? $"슬라임 {slimeNum}";
-            this.level = level ?? 1;
-            this.strength = strength ?? 3;
-            this.health = health ?? 10;
+            this.DifficultyState = new EasyMode();
+            this.name = name ?? $"드래곤 {dragonNum}";
+            this.level = level ?? 30;
+            this.strength = strength ?? 100;
+            this.health = health ?? 3000;
 
-            slimeNum++;
+            dragonNum++;
         }
     }
 }
