@@ -88,7 +88,7 @@ namespace DesignPattern
         {
             string name = $"드래곤 {Dragon.dragonNum}";
             int level = 30;
-            int strength = 100;
+            int strength = 50;
             int health = 3000;
 
             Dragon dragon = new Dragon(name, level, strength, health);

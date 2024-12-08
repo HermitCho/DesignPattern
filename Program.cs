@@ -29,7 +29,9 @@ namespace DesignPattern
             mediator.RegisterMonster(goblin1);
             mediator.RegisterMonster(goblin2);
 
-            dragon1.PerformAoEAttack();
+            dragon1.PerformAreaAttack();
+
+            player1.SaveInfoToFile();
 
             //goblin1.Ready();
             // goblin1.Die();

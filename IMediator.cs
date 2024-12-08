@@ -13,19 +13,19 @@ namespace DesignPattern
         public void RegisterBoss(Boss boss)
         {
             _boss = boss;
-            _boss.SetMediator(this);
+            _boss.SetBMediator(this);
         }
 
         public void RegisterPlayer(Player player)
         {
             _players.Add(player);
-            player.SetMediator(this);
+            player.SetBMediator(this);
         }
 
         public void RegisterMonster(Monster monster)
         {
             _monsters.Add(monster);
-            monster.SetMediator(this);
+            monster.SetBMediator(this);
         }
 
         public void Notify(object sender, string eventCode)

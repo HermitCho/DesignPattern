@@ -9,9 +9,9 @@ namespace DesignPattern
 
     public interface ICharacter
     {
-        void Display_Created();
-        string GetInfo();
-        void Die();
+        public void Display_Created();
+        public string GetInfo();
+        public void Die();
     }
 
 
@@ -24,7 +24,7 @@ namespace DesignPattern
     //플레이어 클래스
     public class Player : ICharacter
     {
-        IMediator _mediator;
+        BattleMediator _mediator;
         State currentState = State.Idle;
         static int playerNum = Int32.Parse(File.ReadAllText("playerNum_to_Server"));
         string name;
@@ -51,7 +51,7 @@ namespace DesignPattern
             Console.WriteLine("플레이어 '" + name + "'(이)가 생성되었습니다.");
         }
 
-        public void SetMediator(IMediator mediator)
+        public void SetBMediator(BattleMediator mediator)
         {
             _mediator = mediator;
         }
@@ -111,7 +111,7 @@ namespace DesignPattern
     //몬스터 클래스 추상
     public abstract class Monster : ICharacter
     {
-        protected IMediator _mediator;
+        protected BattleMediator _mediator;
         protected State currentState = State.Idle;
         protected string name;
         protected int level;
@@ -123,7 +123,7 @@ namespace DesignPattern
         {
             Console.WriteLine($"{name}이(가) 나타났습니다.");
         }
-        public void SetMediator(IMediator mediator)
+        public void SetBMediator(BattleMediator mediator)
         {
             _mediator = mediator;
         }
@@ -171,12 +171,13 @@ namespace DesignPattern
         public static int goblinNum = 1;
 
         //기본 생성자
-        public Goblin(string? name, int? level, int? strength, int? health)
+        public Goblin(string? name, int? level, int? strength, int? max_health)
         {
             this.name = name ?? $"고블린 {goblinNum}";
             this.level = level ?? 1;
             this.strength = strength ?? 5;
-            this.health = health ?? 20;
+            this.max_health = max_health ?? 20;
+            this.health = max_health ?? 20;
 
             goblinNum++;
         }
@@ -192,13 +193,13 @@ namespace DesignPattern
     public class Boss : Monster
     {
 
-        protected IMediator _mediator;
+        protected BattleMediator _mediator;
         protected ICharacterState DifficultyState = new EasyMode();
         public void SetState(ICharacterState newState)
         {
             DifficultyState = newState;
         }
-        public void SetMediator(IMediator mediator)
+        public void SetBMediator(BattleMediator mediator)
         {
             _mediator = mediator;
         }
@@ -208,7 +209,7 @@ namespace DesignPattern
             return strength; // 기본 광역 공격 데미지
         }
 
-        public void PerformAoEAttack()
+        public void PerformAreaAttack()
         {
             DifficultyState.HandleAttack(_mediator);
         }
@@ -220,13 +221,14 @@ namespace DesignPattern
         public static int dragonNum = 1;
 
         //기본 생성자
-        public Dragon(string? name, int? level, int? strength, int? health)
+        public Dragon(string? name, int? level, int? strength, int? max_health)
         {
             this.DifficultyState = new EasyMode();
             this.name = name ?? $"드래곤 {dragonNum}";
             this.level = level ?? 30;
-            this.strength = strength ?? 100;
-            this.health = health ?? 3000;
+            this.strength = strength ?? 50;
+            this.max_health = max_health ?? 3000;
+            this.health = max_health ?? 3000;
 
             dragonNum++;
         }
