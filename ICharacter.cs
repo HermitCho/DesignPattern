@@ -24,7 +24,6 @@ namespace DesignPattern
     //플레이어 클래스
     public class Player : ICharacter
     {
-        BattleMediator _mediator;
         State currentState = State.Idle;
         static int playerNum = Int32.Parse(File.ReadAllText("playerNum_to_Server"));
         string name;
@@ -49,11 +48,6 @@ namespace DesignPattern
         public void Display_Created()
         {
             Console.WriteLine("플레이어 '" + name + "'(이)가 생성되었습니다.");
-        }
-
-        public void SetBMediator(BattleMediator mediator)
-        {
-            _mediator = mediator;
         }
 
         public string GetInfo()
@@ -111,7 +105,6 @@ namespace DesignPattern
     //몬스터 클래스 추상
     public abstract class Monster : ICharacter
     {
-        protected BattleMediator _mediator;
         protected State currentState = State.Idle;
         protected string name;
         protected int level;
@@ -122,10 +115,6 @@ namespace DesignPattern
         public void Display_Created()
         {
             Console.WriteLine($"{name}이(가) 나타났습니다.");
-        }
-        public void SetBMediator(BattleMediator mediator)
-        {
-            _mediator = mediator;
         }
 
         public string GetInfo()
@@ -192,16 +181,10 @@ namespace DesignPattern
 
     public class Boss : Monster
     {
-
-        protected BattleMediator _mediator;
         protected ICharacterState DifficultyState = new EasyMode();
         public void SetState(ICharacterState newState)
         {
             DifficultyState = newState;
-        }
-        public void SetBMediator(BattleMediator mediator)
-        {
-            _mediator = mediator;
         }
 
         public int GetAreaDamage()
@@ -209,7 +192,7 @@ namespace DesignPattern
             return strength; // 기본 광역 공격 데미지
         }
 
-        public void PerformAreaAttack()
+        public void PerformAreaAttack(BattleMediator _mediator)
         {
             DifficultyState.HandleAttack(_mediator);
         }
