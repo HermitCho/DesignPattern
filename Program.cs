@@ -31,6 +31,9 @@ namespace DesignPattern
 
             dragon1.PerformAreaAttack(mediator);
 
+            mediator.UnregisterMonster(goblin1);
+            mediator.UnregisterMonster(goblin2);
+
             player1.SaveInfoToFile();
         }
     }

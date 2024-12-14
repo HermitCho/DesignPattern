@@ -2,7 +2,7 @@ namespace DesignPattern
 {
     public interface IMediator
     {
-        void Notify(object sender, string eventCode);
+        void Notify(object sender, string eventCode, int strength);
     }
     public class BattleMediator : IMediator
     {
@@ -25,17 +25,27 @@ namespace DesignPattern
             _monsters.Add(monster);
         }
 
-        public void Notify(object sender, string eventCode)
+        public void UnregisterPlayer(Player player)
+        {
+            _players.Remove(player);
+        }
+
+        public void UnregisterMonster(Monster monster)
+        {
+            _monsters.Remove(monster);
+        }
+
+        public void Notify(object sender, string eventCode, int strength)
         {
             if (eventCode == "AreaAttack")
             {
                 foreach (var player in _players)
                 {
-                    player.TakeDamage(_boss.GetAreaDamage());
+                    player.TakeDamage(strength);
                 }
                 foreach (var monster in _monsters)
                 {
-                    monster.TakeDamage(_boss.GetAreaDamage());
+                    monster.TakeDamage(strength);
                 }
             }
         }

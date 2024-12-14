@@ -187,14 +187,9 @@ namespace DesignPattern
             DifficultyState = newState;
         }
 
-        public int GetAreaDamage()
-        {
-            return strength; // 기본 광역 공격 데미지
-        }
-
         public void PerformAreaAttack(BattleMediator _mediator)
         {
-            DifficultyState.HandleAttack(_mediator);
+            DifficultyState.HandleAttack(_mediator, strength);
         }
     }
 
