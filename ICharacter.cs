@@ -7,21 +7,19 @@ namespace DesignPattern
         Rest
     }
 
+
+    //캐릭터 인터페이스
     public interface ICharacter
     {
         public void Display_Created();
-        public string GetInfo();
         public void Die();
+        public void TakeDamage(int damage);
+
     }
 
 
 
-
-
-
-
-
-    //플레이어 클래스
+    //플레이어 캐릭터 클래스
     public class Player : ICharacter
     {
         State currentState = State.Idle;
@@ -41,20 +39,23 @@ namespace DesignPattern
 
             level = 1;
             strength = 10;
-            max_health = 100;
+            max_health = 1000;
             health = max_health;
         }
 
+        //캐릭터 생성 표시
         public void Display_Created()
         {
             Console.WriteLine("플레이어 '" + name + "'(이)가 생성되었습니다.");
         }
 
+        //저장을 위한 정보 가져오기
         public string GetInfo()
         {
             return $"이름 : {name}\n레벨 : {level}\n공격력 : {strength}\n체력 : {health}\n현재 상태 : {currentState}\n플레이어 ID : {playerNum}\r\n";
         }
 
+        //캐릭터 저장
         public void SaveInfoToFile()
         {
             string filePath = $"{name}정보.txt";
@@ -69,9 +70,11 @@ namespace DesignPattern
             }
         }
 
+        //데미지 피격
         public void TakeDamage(int damage)
         {
             health -= damage;
+            currentState = State.Combat;
             Console.WriteLine($"{name}(이)가 {damage} 데미지를 받았습니다.");
             if (health <= 0)
             {
@@ -79,11 +82,14 @@ namespace DesignPattern
             }
         }
 
+        //캐릭터 별 고유 아이디 설정을 위한 아이디 증가
         public void increaseID()
         {
             playerNum++;
             File.WriteAllText("playerNum_to_Server", playerNum.ToString());
         }
+
+        //플레이어 사망 시 부활
         public void Die()
         {
             Console.Write($"{name}이(가) 죽었습니다. 부활합니다.\n");
@@ -102,9 +108,10 @@ namespace DesignPattern
 
 
 
-    //몬스터 클래스 추상
-    public abstract class Monster : ICharacter
+    //몬스터 캐릭터 추상 클래스
+    public abstract class Monster : ICharacter, IDisposable
     {
+        // 몬스터 상태와 기본 속성
         protected State currentState = State.Idle;
         protected string name;
         protected int level;
@@ -112,19 +119,21 @@ namespace DesignPattern
         protected int health;
         protected int max_health;
 
+        private bool _disposed = false;
+
+        // 캐릭터 생성 표시
         public void Display_Created()
         {
             Console.WriteLine($"{name}이(가) 나타났습니다.");
         }
 
-        public string GetInfo()
-        {
-            return $"이름: {name}\n레벨 : {level}\n공격력 : {strength}\n체력 : {health}\n현재 상태 : {currentState.GetType().Name}\r\n";
-        }
-
+        // 데미지 피격
         public void TakeDamage(int damage)
         {
+            if (_disposed) throw new ObjectDisposedException(nameof(Monster));
+
             health -= damage;
+            currentState = State.Combat;
             Console.WriteLine($"{name}(이)가 {damage} 데미지를 받았습니다.");
             if (health <= 0)
             {
@@ -132,25 +141,43 @@ namespace DesignPattern
             }
         }
 
-        //몬스터 사망 시 클래스 삭제 및 메모리 관리
+        // 몬스터 사망
         public void Die()
         {
             Console.WriteLine($"'{name}'이(가) 처치되었습니다.");
-            Dispose();
+            Dispose(); // Dispose를 호출하여 리소스를 해제
         }
 
+        // 리소스 해제
         public void Dispose()
         {
-            name = null;
-            level = 0;
-            strength = 0;
-            health = 0;
-            max_health = 0;
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    // 관리되는 리소스 해제
+                    name = null;
+                }
+
+                // 관리되지 않는 리소스 해제 (필요 시)
+                level = 0;
+                strength = 0;
+                health = 0;
+                max_health = 0;
+
+                _disposed = true;
+            }
         }
 
         ~Monster()
         {
-            Dispose();
+            Dispose(false);
         }
     }
 
@@ -178,16 +205,19 @@ namespace DesignPattern
 
 
 
-
+    //보스 캐릭터 클래스
     public class Boss : Monster
     {
-        protected ICharacterState DifficultyState = new EasyMode();
+        protected ICharacterState DifficultyState = new EasyMode(); //보스 기본 난이도 설정
+
+        //보스 난이도 변경
         public void SetState(ICharacterState newState)
         {
             DifficultyState = newState;
         }
 
-        public void PerformAreaAttack(BattleMediator _mediator)
+        //보스 공격 함수
+        public void PerformAttack(BattleMediator _mediator)
         {
             DifficultyState.HandleAttack(_mediator, strength);
         }

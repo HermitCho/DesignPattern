@@ -1,39 +1,42 @@
 namespace DesignPattern
 {
+
+    /*상태 패턴
+    캐릭터 난이도 클래스 인터페이스
+    */
     public interface ICharacterState
     {
         public void HandleAttack(BattleMediator mediator, int strength);
     }
 
-    // 비전투 상태 클래스
+    // 난이도 쉬움
     public class EasyMode : ICharacterState
     {
         public void HandleAttack(BattleMediator mediator, int strength)
         {
-            Console.WriteLine("광역 공격");
-            mediator.Notify(this, "AreaAttack", strength);
+            Console.WriteLine("보스의 공격!");
+            mediator.Notify(this, "SingleAttack", strength / 2);
         }
     }
 
-    // 전투 상태 클래스
+    // 난이도 보통
     public class NormalMode : ICharacterState
     {
         public void HandleAttack(BattleMediator mediator, int strength)
         {
-            Console.WriteLine("2연속 광역 공격");
-            mediator.Notify(this, "AreaAttack", strength);
+            Console.WriteLine("보스의 공격!");
             mediator.Notify(this, "AreaAttack", strength);
         }
     }
 
+    //난이도 어려움
     public class HardMode : ICharacterState
     {
         public void HandleAttack(BattleMediator mediator, int strength)
         {
-            Console.WriteLine("3연속 광역 공격");
-            mediator.Notify(this, "AreaAttack", strength);
-            mediator.Notify(this, "AreaAttack", strength);
-            mediator.Notify(this, "AreaAttack", strength);
+            Console.WriteLine("보스의 공격!");
+            mediator.Notify(this, "SingleAttack", strength * 2);
+            mediator.Notify(this, "AreaAttack", strength * 2);
         }
     }
 }
