@@ -15,7 +15,7 @@ namespace DesignPattern
         public void HandleAttack(BattleMediator mediator, int strength)
         {
             Console.WriteLine("보스의 공격!");
-            mediator.Notify(this, "SingleAttack", strength / 2);
+            mediator.NotifyAttack(this, BossAttackType.SingleAttack, strength / 2);
         }
     }
 
@@ -25,7 +25,7 @@ namespace DesignPattern
         public void HandleAttack(BattleMediator mediator, int strength)
         {
             Console.WriteLine("보스의 공격!");
-            mediator.Notify(this, "AreaAttack", strength);
+            mediator.NotifyAttack(this, BossAttackType.AreaAttack, strength);
         }
     }
 
@@ -35,8 +35,8 @@ namespace DesignPattern
         public void HandleAttack(BattleMediator mediator, int strength)
         {
             Console.WriteLine("보스의 공격!");
-            mediator.Notify(this, "SingleAttack", strength * 2);
-            mediator.Notify(this, "AreaAttack", strength * 2);
+            mediator.NotifyAttack(this, BossAttackType.SingleAttack, strength * 2);
+            mediator.NotifyAttack(this, BossAttackType.AreaAttack, strength * 2);
         }
     }
 }

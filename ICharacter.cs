@@ -13,14 +13,13 @@ namespace DesignPattern
     {
         public void Display_Created();
         public void Die();
-        public void TakeDamage(int damage);
 
     }
 
 
 
     //플레이어 캐릭터 클래스
-    public class Player : ICharacter
+    public class Player : ICharacter, IBattleCharacter
     {
         State currentState = State.Idle;
         static int playerNum = Int32.Parse(File.ReadAllText("playerNum_to_Server"));
@@ -109,7 +108,7 @@ namespace DesignPattern
 
 
     //몬스터 캐릭터 추상 클래스
-    public abstract class Monster : ICharacter, IDisposable
+    public abstract class Monster : ICharacter, IBattleCharacter, IDisposable
     {
         // 몬스터 상태와 기본 속성
         protected State currentState = State.Idle;
@@ -219,7 +218,7 @@ namespace DesignPattern
         //보스 공격 함수
         public void PerformAttack(BattleMediator _mediator)
         {
-            DifficultyState.HandleAttack(_mediator, strength);
+            DifficultyState.HandleAttack(_mediator, this, strength);
         }
     }
 

@@ -1,19 +1,25 @@
 namespace DesignPattern
 {
 
+    public enum BossAttackType
+    {
+        SingleAttack,
+        AreaAttack
+    }
+
     //중재자로 전투 중인 객체들 연결
     public interface IMediator
     {
-        void Notify(object sender, string eventCode, int strength);
+        void NotifyAttack(object sender, BossAttackType type, int strength);
     }
 
 
+    //전투 중재자
     public class BattleMediator : IMediator
     {
         private Boss? _boss; //공격자
         private List<Player> _players = new List<Player>(); //피격 플레이어
         private List<Monster> _monsters = new List<Monster>(); //피격 몬스터
-
 
 
         public void RegisterBoss(Boss boss)
@@ -46,10 +52,10 @@ namespace DesignPattern
             _monsters.Remove(monster);
         }
 
-        public void Notify(object sender, string eventCode, int strength)
+        public void NotifyAttack(object sender, BossAttackType type, int strength)
         {
             //광역 공격 시
-            if (eventCode == "AreaAttack")
+            if (type == BossAttackType.AreaAttack)
             {
                 foreach (var player in _players)
                 {
@@ -62,7 +68,7 @@ namespace DesignPattern
             }
 
             //단일 공격 시
-            else if (eventCode == "SingleAttack")
+            else if (type == BossAttackType.SingleAttack)
             {
                 _players[0].TakeDamage(strength);
             }
